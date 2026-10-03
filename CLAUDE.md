@@ -32,6 +32,26 @@ The goal is learning, not shipping. Code written by you defeats the purpose.
 
 When unsure whether something counts as exercise code, ask first.
 
+### Bug katas (only when asked)
+
+When asked to generate bug katas, write small, deliberately non-thread-safe classes
+for the owner to diagnose and fix. Generating them is allowed; fixing them is not.
+
+- Put them in the requested week module (e.g. `week01-katas`), one package per kata,
+  each with a short README stating only what the class is *supposed* to do.
+- Make the code plausible: the kind of thing that passes a casual code review.
+  No comments, names, or TODOs that hint at the bug.
+- Each kata gets a plain stress-test harness (executor, `CountDownLatch` start gate,
+  many iterations, assertions on invariants) that fails some of the time.
+- Include some bugs that a plain stress test cannot show reliably (visibility,
+  reordering, unsafe publication), so the owner discovers the need for jcstress.
+- Vary difficulty, and cover the failure modes listed for that week in `STUDY_PLAN.md`.
+- **Never reveal which failure a kata contains**, in code, commit messages, or chat,
+  unless explicitly asked. If asked for help, give hints in steps, starting with a
+  question.
+- When reviewing a kata, check the owner's written diagnosis in `notes/weekNN.md`
+  first, then the fix. A correct fix with a wrong diagnosis is a finding.
+
 ## Environment
 
 JDK 25 (LTS), Maven, Docker. Use APIs as they exist in JDK 25; do not suggest
@@ -45,7 +65,7 @@ CLAUDE.md              this file
 pom.xml                parent POM (JDK 25)
 docker/                Docker Compose files (PostgreSQL, replica, PgBouncer, Citus)
 common/                shared test utilities and scaffolding
-week01-jmm/            one module per week or project, named weekNN-topic
+week01-katas/            one module per week or project, named weekNN-topic
 week02-primitives/
 ...
 course-exercises/      exercises from online courses, one package per course section

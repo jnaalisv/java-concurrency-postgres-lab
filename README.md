@@ -33,7 +33,7 @@ notes/weekNN.md   what I learned each week
 
 ```bash
 mvn verify                                   # unit and stress tests
-mvn -pl week01-jmm verify -Pjcstress         # jcstress tests for a module
+mvn -pl week01-katas verify -Pjcstress         # jcstress tests for a module
 mvn -pl week02-primitives package -Pjmh && \
   java -jar week02-primitives/target/benchmarks.jar   # JMH benchmarks
 docker compose -f docker/postgres.yml up -d  # local PostgreSQL
@@ -43,7 +43,7 @@ Profile names and paths may change as the scaffolding evolves; see each module's
 
 ## Progress
 
-- [ ] Week 1: The memory model, by breaking things
+- [ ] Week 1: Bug katas: diagnose and fix naive concurrent code
 - [ ] Week 2: Locks, atomics, and your own primitives
 - [ ] Week 3: Executors and liveness
 - [ ] Weeks 4–5: Buffer pool manager

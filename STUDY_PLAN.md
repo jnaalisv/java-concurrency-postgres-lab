@@ -9,6 +9,7 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 - **One at a time:** one course, one book, and one coding project active at any moment.
 - **Done means committed:** a week is finished when the code is in the repo, with tests, plus a few lines of notes on what you learned and what surprised you.
 - **Weeks are flexible:** if a project runs long, let it. Cut learning material before cutting coding.
+- **Bug katas:** week 1 is built around diagnosing and fixing naive code that Claude Code generates. You can ask for more katas in any later week to practise that week’s topic.
 - **Short names:** courses, books, and tools are referred to by short names in the weekly sections. Full titles and links are in the appendix.
 
 **Setup (one evening):** a Maven multi-module repo with JDK 25 (the current LTS), JMH, jcstress, Testcontainers, jOOQ, and Docker Compose for PostgreSQL. Add async-profiler and pgbench when needed.
@@ -17,9 +18,9 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 *Main course: Pogrebinsky. Book: Java Concurrency in Practice. Theory supplement: Rice, Concurrent Programming in Java. Rice lecture numbers follow the Coursera course (modules 1–4); each module also has a mini-project you can do in addition to the weekly build. The module 4 mini-project (Boruvka’s minimum spanning tree) is optional. Lecture titles in modules 2 and 3 may differ slightly on Coursera; the numbers are what to match. Rice is not used after Phase 1.*
 
-### Week 1: The memory model, by breaking things
+### Week 1: Bug katas — diagnose and fix naive concurrent code
 
-**Focus:** happens-before, visibility, reordering, volatile/synchronized/final, safe publication.
+**Focus:** atomicity, visibility, happens-before, reordering, safe publication; learning to recognise each failure mode in plausible-looking code.
 
 **Learn:**
 - Pogrebinsky: introductory and thread-fundamentals sections.
@@ -27,8 +28,11 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 - Rice, module 1: 1.1 Threads. (Rice does not cover the memory model in depth; JCIP ch. 16 is the main source this week.)
 
 **Build:**
-- jcstress tests showing (1) a busy-wait loop that never sees a flag change without volatile, (2) broken double-checked locking, (3) lost updates on a shared counter.
-- Fix each one and prove the fix with the same test.
+- Ask Claude Code to generate 6–8 bug katas in week01-katas: small, plausible, non-thread-safe classes, each with a stress-test harness that fails some of the time. Cover lost updates, check-then-act, a worker stopped by a non-volatile flag, unsafe lazy initialisation, unsafe publication, a shared non-thread-safe collection, and a compound action on a thread-safe collection. Claude Code does not reveal which failure each kata has.
+- For each kata: run the test and watch it fail; before changing any code, write the diagnosis in notes/week01.md (which failure mode, which happens-before edge is missing or which sequence is not atomic); then fix it and re-run many times.
+- Plain stress tests first: an executor, a CountDownLatch start gate so threads really overlap, many iterations, and assertions on invariants.
+- Introduce jcstress only for the katas a plain test cannot show reliably (visibility and reordering): Termination mode for the stop flag, and an actor/arbiter test for unsafe publication or lazy initialisation. On x86 some reorderings may never appear; record in the notes why the code is still broken.
+- Ask Claude Code to review both the diagnoses and the fixes.
 
 ### Week 2: Locks, atomics, and your own primitives
 
