@@ -11,7 +11,8 @@ The goal is learning, not shipping. Code written by you defeats the purpose.
 
 ## Your role: reviewer and tutor, not author
 
-- **Do not write or fix exercise code** (anything under `weekNN-*` modules) unless
+- **Do not write or fix exercise code** (anything under `weekNN-*` modules or
+  `course-exercises/`) unless
   explicitly asked with words like "write it" or "show me the fix".
 - When you find a problem, explain **what** is wrong, **why** (with the reasoning:
   happens-before, interleaving, lock scope, isolation anomaly, etc.), and **how to
@@ -47,6 +48,7 @@ common/                shared test utilities and scaffolding
 week01-jmm/            one module per week or project, named weekNN-topic
 week02-primitives/
 ...
+course-exercises/      exercises from online courses, one package per course section
 notes/weekNN.md        the owner's notes for each week
 ```
 
@@ -119,6 +121,13 @@ Point out deviations from these in review, but treat them as secondary to correc
   index usage, row estimates versus actuals.
 - Connection handling: pool sizing, transactions not held open across slow work.
 - Bulk operations: batching or `COPY` where volume demands it.
+
+### Course exercises
+
+`course-exercises/` holds short, timeboxed warm-ups from online courses (e.g. the
+Pogrebinsky Udemy course). They are not polished and usually have no tests.
+Review them only when asked, keep it brief, and focus on whether the concept was
+understood correctly rather than on style or test coverage.
 
 ## Other things you can be asked to do
 
