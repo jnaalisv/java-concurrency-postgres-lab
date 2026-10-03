@@ -1,0 +1,11 @@
+target/
+
+# jcstress run output
+results/
+jcstress-results-*.bin.gz
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store
