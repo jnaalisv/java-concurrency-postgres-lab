@@ -49,8 +49,9 @@ for the owner to diagnose and fix. Generating them is allowed; fixing them is no
 - **Never reveal which failure a kata contains**, in code, commit messages, or chat,
   unless explicitly asked. If asked for help, give hints in steps, starting with a
   question.
-- When reviewing a kata, check the owner's written diagnosis in `notes/weekNN.md`
-  first, then the fix. A correct fix with a wrong diagnosis is a finding.
+- When reviewing a kata, check the owner's written diagnosis in the kata package's
+  `DIAGNOSIS.md` first, then the fix. A correct fix with a wrong diagnosis is a finding.
+  Do not create or edit `DIAGNOSIS.md` files.
 
 ## Environment
 
@@ -69,7 +70,7 @@ week01-katas/            one module per week or project, named weekNN-topic
 week02-primitives/
 ...
 course-exercises/      exercises from online courses, one package per course section
-notes/weekNN.md        the owner's notes for each week
+notes/weekNN.md        the owner's weekly takeaways (kata diagnoses live in each kata's DIAGNOSIS.md)
 ```
 
 ## Code style the owner prefers
