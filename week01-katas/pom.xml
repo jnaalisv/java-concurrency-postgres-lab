@@ -10,17 +10,21 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>week01-jmm</artifactId>
-    <name>Week 1: the Java memory model</name>
+    <artifactId>week01-katas</artifactId>
+    <name>Week 1: bug katas</name>
 
     <!--
+      Katas live in src/main/java/lab/week01/<kata>, one package each, with a README
+      saying what the class is supposed to do. Their plain stress tests are in
+      src/test/java and run with `mvn -pl week01-katas test`.
+
       jcstress tests live in src/main/java, as jcstress expects: its annotation
       processor generates the test harness at compile time, and the shaded
       jcstress.jar runs everything it finds.
 
-        mvn -pl week01-jmm verify -Pjcstress                       run all tests
-        mvn -pl week01-jmm verify -Pjcstress -Djcstress.args="-t Counter -m quick"
-        java -jar week01-jmm/target/jcstress.jar -h                options
+        mvn -pl week01-katas verify -Pjcstress                       run all tests
+        mvn -pl week01-katas verify -Pjcstress -Djcstress.args="-t Counter -m quick"
+        java -jar week01-katas/target/jcstress.jar -h                options
     -->
 
     <properties>
@@ -32,6 +36,11 @@
         <dependency>
             <groupId>org.openjdk.jcstress</groupId>
             <artifactId>jcstress-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
