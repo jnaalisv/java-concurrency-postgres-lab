@@ -15,7 +15,7 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 ## Phase 1: Concurrency (weeks 1–7)
 
-*Main course: Pogrebinsky. Book: Java Concurrency in Practice. Theory supplement: Rice, Concurrent Programming in Java.*
+*Main course: Pogrebinsky. Book: Java Concurrency in Practice. Theory supplement: Rice, Concurrent Programming in Java. Rice lecture numbers follow the Coursera course (modules 1–4); each module also has a mini-project you can do in addition to the weekly build. The module 4 mini-project (Boruvka’s minimum spanning tree) is optional. Lecture titles in modules 2 and 3 may differ slightly on Coursera; the numbers are what to match. Rice is not used after Phase 1.*
 
 ### Week 1: The memory model, by breaking things
 
@@ -24,6 +24,7 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 **Learn:**
 - Pogrebinsky: introductory and thread-fundamentals sections.
 - JCIP ch. 2, 3, and 16.
+- Rice, module 1: 1.1 Threads. (Rice does not cover the memory model in depth; JCIP ch. 16 is the main source this week.)
 
 **Build:**
 - jcstress tests showing (1) a busy-wait loop that never sees a flag change without volatile, (2) broken double-checked locking, (3) lost updates on a shared counter.
@@ -36,6 +37,9 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 **Learn:**
 - Pogrebinsky: data sharing, locking, and atomic operations sections.
 - JCIP ch. 5, 13, 14, and 15.
+- Rice, module 1: 1.2 Structured Locks, 1.3 Unstructured Locks, and the Locking and Synchronization demonstration.
+- Rice, module 2: 2.1 Critical Sections, 2.4 Atomic Variables, 2.5 Read-Write Isolation.
+- Rice, module 3: 3.5 Bounded Buffer Problem (pairs with the bounded queue exercise).
 
 **Build:**
 - A bounded blocking queue, first with wait/notify, then with ReentrantLock and two Conditions.
@@ -48,7 +52,8 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Learn:**
 - JCIP ch. 6–8 and 10.
-- Rice, Concurrent Programming in Java: start the course (locks and critical sections).
+- Rice, module 1: 1.4 Liveness, 1.5 Dining Philosophers.
+- Rice, module 2: 2.2 Object-Based Isolation (monitors). (Rice does not cover executors; JCIP ch. 6–8 is the source.)
 
 **Build:**
 - A minimal thread pool from scratch (workers, task queue, shutdown()/shutdownNow(), rejection policy); compare with ThreadPoolExecutor.
@@ -61,6 +66,8 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 **Learn:**
 - CMU 15-445: lectures on database storage and buffer pools.
 - The CMU buffer pool project specification (use it as the design spec).
+- Rice, module 2: 2.3 the concurrent spanning tree example (fine-grained, per-object locking).
+- Rice, module 4: 4.1 Optimistic Concurrency, 4.4 Concurrent Hash Map (relevant to the page table).
 
 **Build:**
 - Disk manager over FileChannel with fixed 4 KB pages held in ByteBuffers.
@@ -73,8 +80,9 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 **Focus:** bounded queues, backpressure, ordering, shutdown, CompletableFuture.
 
 **Learn:**
-- Rice course: finish (actors and concurrent data structures).
 - Pogrebinsky: sections on inter-thread communication.
+- Rice, module 3: 3.1 Actors, 3.2 Actor Examples, 3.3 Sieve of Eratosthenes, 3.4 Producer-Consumer Problem (actors are a useful contrast to a queue-based pipeline).
+- Rice, module 4: 4.2 Concurrent Queue, 4.3 Linearizability.
 
 **Build:**
 - Producer–consumer pipeline over a large generated file: one reader, N workers, one writer, bounded queues, sequence numbers with a reorder buffer, poison-pill shutdown, per-record error handling.
@@ -88,6 +96,7 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 **Learn:**
 - Pogrebinsky: virtual threads and performance sections.
 - JCIP ch. 11 and 12.
+- Rice: nothing on virtual threads (the course is Java 8-era). Optional: Amdahl’s law is covered in module 1 of the first course in the series, Parallel Programming in Java.
 - Optional: Kabutz, Mastering Virtual Threads in Java, if the topic still feels shaky.
 - JEP 444 (virtual threads), JEP 491 (why synchronized no longer pins since Java 24), JEP 506 (scoped values), JEP 505 (structured concurrency, preview in 25).
 
