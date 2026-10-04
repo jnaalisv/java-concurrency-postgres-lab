@@ -1,6 +1,6 @@
 # Java Concurrency & PostgreSQL Scaling
 
-*Study plan, version 2 — built around the chosen courses, books, and hands-on projects*
+*Study plan built around the chosen courses, books, and hands-on projects*
 
 ## How this plan works
 
@@ -223,12 +223,12 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Build:**
 - One service: high-throughput ingestion (Phase 1 pipeline) into partitioned PostgreSQL, outbox, correct concurrent balance updates, load test.
-- Profile, fix the top bottleneck, and write a one-page design summary of the trade-offs. This becomes your interview story.
+- Profile, fix the top bottleneck, and write a one-page design summary of the trade-offs.
 - Rapid-fire review of the Phase 1 fundamentals.
 
 ## Phase 4: Optional, later
 
-- **Kabutz, Extreme Java – Concurrency Performance:** if you want depth beyond interview level after finishing the book. (Skip the bundles; they overlap with Pogrebinsky.)
+- **Kabutz, Extreme Java – Concurrency Performance:** if you want more depth after finishing the book. (Skip the bundles; they overlap with Pogrebinsky.)
 - **Rice, parallel and distributed courses:** the other two parts of the series.
 - **MIT 6.5840 labs in Java:** MapReduce, then Raft, then a fault-tolerant key/value store. The biggest time investment on the list.
 - **Remaining CMU projects:** query execution and concurrency control, if database internals turn out to be your thing.

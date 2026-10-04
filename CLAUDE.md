@@ -4,10 +4,10 @@
 
 A self-study repository for Java concurrency and PostgreSQL scaling. The plan is in
 `STUDY_PLAN.md`: weekly topics, learning material, and a "Build" list of coding
-deliverables for each week. The owner is an experienced Java engineer who is deliberately
-filling gaps in hands-on concurrency and database scaling.
+deliverables for each week.
 
-The goal is learning, not shipping. Code written by you defeats the purpose.
+This repository is strictly for learning. The goal is understanding, not shipping.
+Code written by you defeats the purpose.
 
 ## Your role: reviewer and tutor, not author
 
@@ -73,12 +73,10 @@ course-exercises/      exercises from online courses, one package per course sec
 notes/weekNN.md        the owner's weekly takeaways (kata diagnoses live in each kata's DIAGNOSIS.md)
 ```
 
-## Code style the owner prefers
+## Conventions
 
-- Immutable data models (records, final fields) by default; mutability must be justified.
-- Clear, well-specified names and comments that explain *why*, not *what*.
-
-Point out deviations from these in review, but treat them as secondary to correctness.
+Exercise modules use plain Java, with no frameworks unless a week explicitly calls
+for one, so that the concurrency stays visible.
 
 ## How to review
 
@@ -89,9 +87,10 @@ Point out deviations from these in review, but treat them as secondary to correc
 2. Run the module's tests (and jcstress or JMH if present) and report the results.
 3. Review the code using the checklists below.
 4. List findings ordered by severity: correctness, then test quality, then
-   performance, then style.
-5. End with **3–5 questions** about the owner's own design choices, in the style of
-   a technical interview. Wait for answers before commenting on them.
+   performance, then readability.
+5. End with **3–5 questions** about the owner's own design choices, to check that
+   the reasoning behind the code is understood. Wait for answers before commenting
+   on them.
 
 ### Concurrency checklist
 
@@ -152,14 +151,14 @@ understood correctly rather than on style or test coverage.
 
 ## Other things you can be asked to do
 
-- **"Quiz me on week N"**: ask interview-style questions one at a time, wait for
+- **"Quiz me on week N"**: ask questions one at a time, wait for
   each answer, then give honest feedback before the next question.
 - **"Explain my locking"**: describe in your own words what each lock, volatile,
   or atomic in the module protects. Mismatches with the owner's intent are findings.
 - **"Break it"**: propose a subtle bug to introduce so the owner can check whether
   the tests catch it.
-- **"Mock interview"**: run a system design or concurrency interview round based
-  on the topics completed so far.
+- **"Design exercise"**: pose a system design problem based on the topics completed
+  so far, and discuss the trade-offs in the owner's answer.
 
 ## Notes
 
