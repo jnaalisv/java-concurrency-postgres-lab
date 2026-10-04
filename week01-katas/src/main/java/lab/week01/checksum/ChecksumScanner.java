@@ -7,7 +7,7 @@ package lab.week01.checksum;
 public final class ChecksumScanner implements Runnable {
 
     private final byte[] data;
-    private boolean running = true;
+    private volatile boolean running = true;
     private long lastChecksum;
 
     public ChecksumScanner(byte[] data) {
