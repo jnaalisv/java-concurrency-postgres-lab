@@ -25,6 +25,6 @@ mvn -pl week01-katas test -Dtest=WalletStressTest           # one kata
 for i in {1..20}; do mvn -q -pl week01-katas test -Dtest=WalletStressTest || break; done   # many runs
 ```
 
-The workflow is in `STUDY_PLAN.md` (week 1): run, diagnose in `notes/week01.md` before
-changing code, fix, re-run many times. Write jcstress tests in `src/main/java` (see the
+The workflow is in `STUDY_PLAN.md` (week 1): run, diagnose in a `DIAGNOSIS.md` in the kata's
+package before changing code, fix, re-run many times. Write jcstress tests in `src/main/java` (see the
 module POM for how to run them) for the katas a plain stress test cannot settle.
