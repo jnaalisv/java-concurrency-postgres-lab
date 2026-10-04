@@ -8,9 +8,9 @@ The full plan, with resources, is in [`STUDY_PLAN.md`](STUDY_PLAN.md).
 
 | Phase | Weeks | Focus |
 |---|---|---|
-| 1. Concurrency | 1–7 | Memory model, locks and atomics, executors, a buffer pool manager, pipelines, virtual threads on JDK 25 |
-| 2. Databases | 8–15 | Query plans and indexes, a concurrent B+ tree, isolation and locking, partitioning, replication, sharding |
-| 3. Distributed systems and design | 16–19 | Consistency, sagas, capstone service |
+| 1. Concurrency | 1–8 | Bug katas, locks and atomics, executors, a buffer pool manager, pipelines, virtual threads, scoped values, structured concurrency |
+| 2. Databases | 9–17 | Query plans and indexes, a concurrent B+ tree, isolation and locking, partitioning, online schema changes, replication and pooling, sharding |
+| 3. Distributed systems and design | 18–21 | Distributed transactions, consistency, capstone service |
 
 ## Layout
 
@@ -48,12 +48,14 @@ Profile names and paths may change as the scaffolding evolves; see each module's
 - [ ] Week 3: Executors and liveness
 - [ ] Weeks 4–5: Buffer pool manager
 - [ ] Week 6: Pipelines and asynchronous composition
-- [ ] Week 7: Virtual threads on JDK 25
-- [ ] Week 8: Query plans and indexes
-- [ ] Weeks 9–11: Concurrent B+ tree
-- [ ] Week 12: Transactions and isolation
-- [ ] Week 13: Partitioning and job queues
-- [ ] Week 14: Replication and connection pooling
-- [ ] Week 15: Sharding
-- [ ] Weeks 16–17: Consistency and cross-shard work
-- [ ] Weeks 18–19: Capstone
+- [ ] Week 7: Virtual threads: where they help and where they hurt
+- [ ] Week 8: Scoped values, structured concurrency, and observing virtual threads
+- [ ] Week 9: Query plans and indexes
+- [ ] Weeks 10–12: Concurrent B+ tree
+- [ ] Week 13: Transactions and isolation
+- [ ] Week 14: Partitioning and job queues
+- [ ] Week 15: Online schema changes and maintenance
+- [ ] Week 16: Replication and connection pooling
+- [ ] Week 17: Sharding
+- [ ] Weeks 18–19: Distributed transactions and consistency
+- [ ] Weeks 20–21: Capstone

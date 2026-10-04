@@ -141,6 +141,15 @@ for one, so that the concurrency stays visible.
   index usage, row estimates versus actuals.
 - Connection handling: pool sizing, transactions not held open across slow work.
 - Bulk operations: batching or `COPY` where volume demands it.
+- Large reads: streamed (fetch size with autocommit off, or `COPY`), never loaded
+  into memory whole.
+- DDL on large tables: the lock level each statement takes, `lock_timeout` set,
+  `CONCURRENTLY` / `NOT VALID` used where available, no unplanned table rewrites.
+- PgBouncer transaction mode: no reliance on session state; prepared statements
+  handled deliberately.
+- Cross-shard work: what happens if a failure occurs between the two commits
+  (in-doubt transactions, recovery), and whether locks taken on different shards
+  can deadlock without either database detecting it.
 
 ### Course exercises
 
