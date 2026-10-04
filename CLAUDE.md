@@ -92,6 +92,26 @@ for one, so that the concurrency stays visible.
    the reasoning behind the code is understood. Wait for answers before commenting
    on them.
 
+### Saving and committing reviews
+
+When asked to review a kata or a module, save the review as `REVIEW.md` in that
+kata's package (or the module root) and commit it yourself, so the history clearly
+separates the owner's work from yours.
+
+- Commit only the `REVIEW.md` file in that commit. Never include the owner's
+  changes, and never commit on the owner's behalf.
+- Commit message: `review(<kata-or-module>): Claude Code review`, e.g.
+  `review(kata-01): Claude Code review`. Keep the `Co-Authored-By` trailer.
+- Start the file with the date and the commit you reviewed (short hash).
+- For a later review of the same kata, append a new dated section to `REVIEW.md`
+  rather than rewriting the earlier one.
+- If the owner's `DIAGNOSIS.md` gets an "After review" section, read it on the next
+  review; if they disagree with a finding, respond to the argument rather than
+  repeating the finding.
+
+The owner's own commits use the prefix `<kata-or-module>:` (e.g. `kata-01: diagnosis`,
+`kata-01: fix`, `kata-01: address review`).
+
 ### Concurrency checklist
 
 - For every piece of shared mutable state: what protects it? State it explicitly.
