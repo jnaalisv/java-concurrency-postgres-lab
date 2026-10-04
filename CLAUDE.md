@@ -103,14 +103,50 @@ separates the owner's work from yours.
 - Commit message: `review(<kata-or-module>): Claude Code review`, e.g.
   `review(kata-01): Claude Code review`. Keep the `Co-Authored-By` trailer.
 - Start the file with the date and the commit you reviewed (short hash).
-- For a later review of the same kata, append a new dated section to `REVIEW.md`
-  rather than rewriting the earlier one.
-- If the owner's `DIAGNOSIS.md` gets an "After review" section, read it on the next
-  review; if they disagree with a finding, respond to the argument rather than
-  repeating the finding.
+- Append the final word (see below) as a new dated section to `REVIEW.md` rather
+  than rewriting the earlier review. Commit it as
+  `review(<kata-or-module>): final word`.
 
 The owner's own commits use the prefix `<kata-or-module>:` (e.g. `kata-01: diagnosis`,
 `kata-01: fix`, `kata-01: address review`).
+
+### Kata review cycle: one round, then a final word
+
+Each kata gets exactly one round of discussion:
+
+1. The owner commits the diagnosis, then the fix.
+2. You write `REVIEW.md` and commit it.
+3. The owner responds once, in an "After review" section of `DIAGNOSIS.md`
+   (not in chat, so the record stays in the repo).
+4. You append a final, dated **"Final word"** section to `REVIEW.md` and commit it.
+   After that the kata is closed. Do not continue the discussion unless the owner
+   explicitly reopens it.
+
+**Format of `REVIEW.md`:**
+
+- Start with a short **verdict** (diagnosis: correct / partly correct / incorrect;
+  fix: correct / incomplete / incorrect) and the **two or three most important
+  things** to work on. The reader should get the gist from the first few lines.
+- Then numbered findings, ordered by severity, with the severity label on each.
+  Group minor points (wording, commit prefixes) into a single last finding.
+- Findings point to the problem and give hints or experiments, never the answer.
+  An experiment that lets the owner discover the answer (e.g. "run with `-Xint`
+  and predict the result first") is better than a heavier hint.
+- End with 3–4 questions. Do not repeat a question that a finding already asks;
+  the questions should add something, such as alternative fixes or consequences
+  for callers.
+
+**Format of the "Final word":**
+
+- Respond to each part of the owner's "After review" section: say clearly where an
+  answer is right, where it is still wrong or incomplete, and concede where the
+  owner's argument is better than the original finding.
+- Restate the verdict, updated if the response changed it.
+- **What to study again:** specific references from `STUDY_PLAN.md` (e.g. "JCIP
+  ch. 16, the section on safe publication"; "Rice 1.4 Liveness"), each tied to the
+  gap it addresses. Say "nothing" if nothing is needed.
+- Optionally, one follow-up exercise (e.g. a related kata) if a gap remains.
+- End with: **This kata is closed.**
 
 ### Concurrency checklist
 
