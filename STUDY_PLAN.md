@@ -6,7 +6,8 @@
 
 Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fourth. Each week pairs a small amount of learning material with a concrete coding deliverable. The coding is the point; the courses and books exist to support it.
 
-- **One at a time:** one course, one book, and one coding project active at any moment.
+- **Main and second sources:** each week lists main sources, which you work through, and second explanations: other authors covering the same topic from a different angle. Use the second explanations to reinforce or clarify; they are worth reading, but the main sources come first if time is short.
+- **One thing at a time:** one main course, one main book, and one coding project in progress at any moment.
 - **Done means committed:** a week is finished when the code is in the repo, with tests, plus a few lines of takeaways in notes/weekNN.md on what you learned and what surprised you.
 - **Weeks are flexible:** if a project runs long, let it. Cut learning material before cutting coding.
 - **Optional items:** build items starting with “Optional:” are useful but lower priority. Skip them if the week is running long; the core items alone fit in roughly 20 weeks.
@@ -17,16 +18,19 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 ## Phase 1: Concurrency (weeks 1–8)
 
-*Main course: Pogrebinsky. Book: Java Concurrency in Practice. Theory supplement: Rice, Concurrent Programming in Java. Rice lecture numbers follow the Coursera course (modules 1–4); each module also has a mini-project you can do in addition to the weekly build. The module 4 mini-project (Boruvka’s minimum spanning tree) is optional. Lecture titles in modules 2 and 3 may differ slightly on Coursera; the numbers are what to match. Rice is not used after Phase 1.*
+*Main course: Pogrebinsky. Main book: Java Concurrency in Practice. Second explanations: Rice, Concurrent Programming in Java, and The Well-Grounded Java Developer. Rice lecture numbers follow the Coursera course (modules 1–4); each module also has a mini-project you can do in addition to the weekly build. The module 4 mini-project (Boruvka’s minimum spanning tree) is optional. Lecture titles in modules 2 and 3 may differ slightly on Coursera; the numbers are what to match. Rice is not used after Phase 1.*
 
 ### Week 1: Bug katas — diagnose and fix naive concurrent code
 
 **Focus:** atomicity, visibility, happens-before, reordering, safe publication; learning to recognise each failure mode in plausible-looking code.
 
-**Learn:**
+**Learn — main sources:**
 - Pogrebinsky: introductory and thread-fundamentals sections.
-- JCIP ch. 2, 3, and 16.
-- Rice, module 1: 1.1 Threads. (Rice does not cover the memory model in depth; JCIP ch. 16 is the main source this week.)
+- JCIP ch. 2, 3, and 16 (ch. 16 is the main source on the memory model).
+
+**Learn — second explanations:**
+- WGJD ch. 5 (Java concurrency fundamentals).
+- Rice, module 1: 1.1 Threads.
 
 **Build:**
 - Ask Claude Code to generate 6–8 bug katas in week01-katas: small, plausible, non-thread-safe classes, each with a stress-test harness that fails some of the time. Cover lost updates, check-then-act, a worker stopped by a non-volatile flag, unsafe lazy initialisation, unsafe publication, a shared non-thread-safe collection, and a compound action on a thread-safe collection. Claude Code does not reveal which failure each kata has.
@@ -40,9 +44,12 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** intrinsic locks, wait/notify, ReentrantLock, conditions, CAS, contention.
 
-**Learn:**
+**Learn — main sources:**
 - Pogrebinsky: data sharing, locking, and atomic operations sections.
 - JCIP ch. 5, 13, 14, and 15.
+
+**Learn — second explanations:**
+- WGJD ch. 5 and 6 (concurrency fundamentals; atomics, locks, concurrent collections).
 - Rice, module 1: 1.2 Structured Locks, 1.3 Unstructured Locks, and the Locking and Synchronization demonstration.
 - Rice, module 2: 2.1 Critical Sections, 2.4 Atomic Variables, 2.5 Read-Write Isolation.
 - Rice, module 3: 3.5 Bounded Buffer Problem (pairs with the bounded queue exercise).
@@ -56,10 +63,14 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** thread pool internals, sizing, rejection, shutdown, deadlock.
 
-**Learn:**
+**Learn — main sources:**
 - JCIP ch. 6–8 and 10.
+- Pogrebinsky: sections on thread pools and liveness, if covered.
+
+**Learn — second explanations:**
+- WGJD ch. 6 (executors) and ch. 5 (deadlocks).
 - Rice, module 1: 1.4 Liveness, 1.5 Dining Philosophers.
-- Rice, module 2: 2.2 Object-Based Isolation (monitors). (Rice does not cover executors; JCIP ch. 6–8 is the source.)
+- Rice, module 2: 2.2 Object-Based Isolation (monitors). (Rice does not cover executors.)
 
 **Build:**
 - A minimal thread pool from scratch (workers, task queue, shutdown()/shutdownNow(), rejection policy); compare with ThreadPoolExecutor.
@@ -69,9 +80,11 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** a real concurrent component: shared state, fine-grained latching, eviction.
 
-**Learn:**
+**Learn — main sources:**
 - CMU 15-445: lectures on database storage and buffer pools.
 - The CMU buffer pool project specification (use it as the design spec).
+
+**Learn — second explanations:**
 - Rice, module 2: 2.3 the concurrent spanning tree example (fine-grained, per-object locking).
 - Rice, module 4: 4.1 Optimistic Concurrency, 4.4 Concurrent Hash Map (relevant to the page table).
 
@@ -85,12 +98,15 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** bounded queues, backpressure, ordering, shutdown, CompletableFuture; keeping memory flat when the input is huge.
 
-**Learn:**
+**Learn — main sources:**
 - Pogrebinsky: sections on inter-thread communication.
-- Rice, module 3: 3.1 Actors, 3.2 Actor Examples, 3.3 Sieve of Eratosthenes, 3.4 Producer-Consumer Problem (actors are a useful contrast to a queue-based pipeline).
-- Rice, module 4: 4.2 Concurrent Queue, 4.3 Linearizability.
 - pgjdbc documentation: getting results based on a cursor (fetch size), and the CopyManager API.
 - GC logging basics: -Xlog:gc\* and reading pause times.
+
+**Learn — second explanations:**
+- WGJD ch. 6 (CompletableFuture), ch. 7 (garbage collection basics), ch. 16 (advanced concurrent programming).
+- Rice, module 3: 3.1 Actors, 3.2 Actor Examples, 3.3 Sieve of Eratosthenes, 3.4 Producer-Consumer Problem (actors are a useful contrast to a queue-based pipeline).
+- Rice, module 4: 4.2 Concurrent Queue, 4.3 Linearizability.
 
 **Build:**
 - Producer–consumer pipeline over a large generated file: one reader, N workers, one writer, bounded queues, sequence numbers with a reorder buffer, poison-pill shutdown, per-record error handling.
@@ -104,11 +120,13 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** I/O-bound vs CPU-bound work, limited downstream resources, Amdahl’s law.
 
-**Learn:**
+**Learn — main sources:**
 - Pogrebinsky: virtual threads and performance sections.
-- JCIP ch. 11 and 12.
-- Rice: nothing on virtual threads (the course is Java 8-era). Optional: Amdahl’s law is covered in module 1 of the first course in the series, Parallel Programming in Java.
 - JEP 444 (virtual threads) and JEP 491 (why synchronized no longer pins since Java 24).
+- JCIP ch. 11 and 12.
+
+**Learn — second explanations:**
+- Rice has nothing on virtual threads (the course is Java 8-era); Amdahl’s law is covered in module 1 of the first course in the series, Parallel Programming in Java.
 - Optional: Kabutz, Mastering Virtual Threads in Java, if the topic still feels shaky.
 
 **Build:**
@@ -121,9 +139,11 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** ScopedValue (JEP 506, final in 25), StructuredTaskScope (JEP 505, preview in 25), JFR and JDK Mission Control.
 
-**Learn:**
+**Learn — main sources:**
 - JEP 506 and JEP 505, read in full: motivation, API, and the comparison with ThreadLocal and CompletableFuture.
 - JDK Mission Control documentation; the JFR event list for virtual threads.
+
+**Learn — second explanations:**
 - Optional: Kabutz, Mastering Virtual Threads in Java (covers both APIs and diagnosis).
 
 **Build:**
@@ -138,16 +158,19 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 ## Phase 2: Databases (weeks 9–17)
 
-*Main course: Nasser. Book: PostgreSQL 14 Internals (plus DDIA ch. 7–8). Supplements: Postgres Professional materials, PostgreSQL and PgBouncer documentation, selected CMU lectures.*
+*Main course: Nasser. Main book: PostgreSQL 14 Internals, plus the PostgreSQL, PgBouncer, and pgjdbc documentation. Second explanations: DDIA ch. 7–8, Postgres Professional materials, CMU lectures.*
 
 ### Week 9: Big data, query plans, indexes
 
 **Focus:** EXPLAIN (ANALYZE, BUFFERS), the planner, B-tree, composite/covering/partial indexes, bulk loading.
 
-**Learn:**
+**Learn — main sources:**
 - Nasser: indexing sections.
 - Rogov Part IV (ch. 16–20) and ch. 25.
+
+**Learn — second explanations:**
 - Postgres Professional: query performance course materials.
+- CMU 15-445: lectures on indexes and query execution.
 
 **Build:**
 - Generate 100 million transactions with generate_series; measure typical queries before and after indexing.
@@ -157,9 +180,12 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** how an index really works, and concurrency inside a data structure.
 
-**Learn:**
+**Learn — main sources:**
 - CMU 15-445: lectures on tree indexes and index concurrency control.
 - The CMU B+ tree project specification.
+
+**Learn — second explanations:**
+- Rogov ch. 25 (B-tree), for how PostgreSQL does it.
 
 **Build:**
 - B+ tree stored in pages from your week 4–5 buffer pool.
@@ -171,11 +197,13 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** MVCC, isolation levels, anomalies, row locks, deadlocks, optimistic locking.
 
-**Learn:**
+**Learn — main sources:**
 - Nasser: ACID and concurrency control sections.
 - Rogov Part I (ch. 2–7) and Part III (ch. 12–13).
+
+**Learn — second explanations:**
 - DDIA ch. 8 (Transactions).
-- CMU: concurrency control and MVCC lectures (optional).
+- CMU 15-445: concurrency control and MVCC lectures.
 
 **Build:**
 - Transfer service with jOOQ, driven by concurrent transfers from a Java executor.
@@ -187,8 +215,9 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** range and hash partitioning, pruning, data lifecycle, SKIP LOCKED, outbox.
 
-**Learn:**
+**Learn — main sources:**
 - Nasser: partitioning sections.
+- PostgreSQL documentation: table partitioning, and SELECT ... FOR UPDATE SKIP LOCKED.
 
 **Build:**
 - Convert the 100M-row table to monthly range partitions and measure pruning; detach and archive an old partition.
@@ -199,10 +228,12 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** changing a large, busy table without locking it for hours: DDL lock levels, lock queues, table rewrites, CREATE INDEX CONCURRENTLY, pg_repack, expand–contract migrations.
 
-**Learn:**
+**Learn — main sources:**
 - PostgreSQL documentation: explicit locking (table-level lock modes), ALTER TABLE, CREATE INDEX (the “Building Indexes Concurrently” section).
 - Rogov ch. 12 (relation-level locks), revisited with DDL in mind.
-- pg_repack documentation.
+
+**Learn — second explanations:**
+- pg_repack documentation (for the optional item).
 
 **Build:**
 - Keep a load generator writing to the 100M-row table throughout the week.
@@ -217,12 +248,14 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** streaming replication, lag, read-your-writes, HikariCP sizing, PgBouncer pool modes and their pitfalls.
 
-**Learn:**
+**Learn — main sources:**
 - Nasser: replication sections.
-- Rogov Part II (skim).
-- Postgres Professional: replication-related materials.
 - PgBouncer documentation: pool modes, the feature table for transaction mode, prepared statement support.
 - pgjdbc documentation: server-side prepared statements and prepareThreshold.
+
+**Learn — second explanations:**
+- Rogov Part II (skim).
+- Postgres Professional: replication-related materials.
 
 **Build:**
 - Primary plus streaming replica in Docker Compose; route reads to the replica and observe lag breaking read-your-writes.
@@ -235,8 +268,10 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** shard keys, consistent hashing, cross-shard queries, global IDs, connection budgets across shards.
 
-**Learn:**
+**Learn — main sources:**
 - Nasser: sharding sections.
+
+**Learn — second explanations:**
 - DDIA ch. 7 (Sharding).
 
 **Build:**
@@ -248,15 +283,17 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 ## Phase 3: Distributed systems and design (weeks 18–21)
 
-*Book: Designing Data-Intensive Applications (2nd ed.). Lectures: selected MIT 6.5840.*
+*Main book: Designing Data-Intensive Applications (2nd ed.). Second explanation: selected MIT 6.5840 lectures.*
 
 ### Weeks 18–19: Distributed transactions and consistency
 
 **Focus:** atomic commit across databases, failures in the middle of a commit, distributed deadlocks, sagas, idempotency, consistency models.
 
-**Learn:**
+**Learn — main sources:**
 - DDIA ch. 6 (Replication), 9 (partial failures), and 10 (consistency and consensus), including the two-phase commit material.
 - PostgreSQL documentation: PREPARE TRANSACTION, COMMIT PREPARED, and pg_prepared_xacts.
+
+**Learn — second explanations:**
 - MIT 6.5840: lectures on Raft, linearizability, and Spanner.
 
 **Build:**
@@ -271,9 +308,12 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Focus:** bringing everything together, including choosing a garbage collector for large heaps and low latency.
 
-**Learn:**
-- Practice system design out loud: ledger, wallet, rate limiter, file-ingestion pipeline.
+**Learn — main sources:**
 - JEP 439 (Generational ZGC) and the HotSpot GC tuning guide sections on G1 and ZGC.
+- Practice system design out loud: ledger, wallet, rate limiter, file-ingestion pipeline.
+
+**Learn — second explanations:**
+- WGJD ch. 7 (Understanding Java performance: measurement, GC, JIT).
 
 **Build:**
 - One service: high-throughput ingestion (Phase 1 pipeline) into partitioned PostgreSQL, outbox, correct concurrent balance updates, load test.
@@ -309,6 +349,7 @@ Roughly 21 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 - **JCIP:** *Java Concurrency in Practice* — Brian Goetz, Tim Peierls, Joshua Bloch, Joseph Bowbeer, David Holmes, Doug Lea; Addison-Wesley, 2006. <https://jcip.net/>
 - **DDIA:** *Designing Data-Intensive Applications, 2nd edition* — Martin Kleppmann and Chris Riccomini; O’Reilly, February 2026. Chapter numbers in this plan follow the second edition. <https://dataintensive.net/>
+- **WGJD:** *The Well-Grounded Java Developer, 2nd edition* — Benjamin J. Evans, Jason Clark, Martijn Verburg; Manning, 2022. Most relevant: ch. 5 (concurrency fundamentals), 6 (JDK concurrency libraries), 7 (performance and GC), 16 (advanced concurrent programming); ch. 14 covers Testcontainers. Its virtual-threads material predates their final release, so prefer the JEPs for weeks 7–8. <https://www.manning.com/books/the-well-grounded-java-developer-second-edition>
 - **Rogov:** *PostgreSQL 14 Internals* — Egor Rogov, Postgres Professional; free PDF. <https://postgrespro.com/community/books/internals>
 
 ### Tools and references
