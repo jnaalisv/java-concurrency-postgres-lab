@@ -7,7 +7,7 @@
 Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fourth. Each week pairs a small amount of learning material with a concrete coding deliverable. The coding is the point; the courses and books exist to support it.
 
 - **One at a time:** one course, one book, and one coding project active at any moment.
-- **Done means committed:** a week is finished when the code is in the repo, with tests, plus a few lines of notes on what you learned and what surprised you.
+- **Done means committed:** a week is finished when the code is in the repo, with tests, plus a few lines of takeaways in notes/weekNN.md on what you learned and what surprised you.
 - **Weeks are flexible:** if a project runs long, let it. Cut learning material before cutting coding.
 - **Bug katas:** week 1 is built around diagnosing and fixing naive code that Claude Code generates. You can ask for more katas in any later week to practise that week’s topic.
 - **Short names:** courses, books, and tools are referred to by short names in the weekly sections. Full titles and links are in the appendix.
@@ -29,10 +29,11 @@ Roughly 19 weeks at 6–8 hours a week, in three core phases plus an optional fo
 
 **Build:**
 - Ask Claude Code to generate 6–8 bug katas in week01-katas: small, plausible, non-thread-safe classes, each with a stress-test harness that fails some of the time. Cover lost updates, check-then-act, a worker stopped by a non-volatile flag, unsafe lazy initialisation, unsafe publication, a shared non-thread-safe collection, and a compound action on a thread-safe collection. Claude Code does not reveal which failure each kata has.
-- For each kata: run the test and watch it fail; before changing any code, write the diagnosis in notes/week01.md (which failure mode, which happens-before edge is missing or which sequence is not atomic); then fix it and re-run many times.
+- For each kata: run the test and watch it fail; before changing any code, write the diagnosis in a DIAGNOSIS.md in the kata’s package (which failure mode, which happens-before edge is missing or which sequence is not atomic); then fix it and re-run many times.
 - Plain stress tests first: an executor, a CountDownLatch start gate so threads really overlap, many iterations, and assertions on invariants.
 - Introduce jcstress only for the katas a plain test cannot show reliably (visibility and reordering): Termination mode for the stop flag, and an actor/arbiter test for unsafe publication or lazy initialisation. On x86 some reorderings may never appear; record in the notes why the code is still broken.
 - Ask Claude Code to review both the diagnoses and the fixes.
+- Write the week’s takeaways in notes/week01.md: patterns you noticed, surprises, and any diagnoses the review showed were wrong.
 
 ### Week 2: Locks, atomics, and your own primitives
 
