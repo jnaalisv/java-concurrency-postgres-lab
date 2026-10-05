@@ -207,3 +207,85 @@ Record in `notes/week01.md` what you found and why it explains round 3.
 
 **This kata is closed**, except for the jcstress test. You asked me to review that once it is
 written, and I'll add the review as a separate dated section.
+
+## 2026-10-06, jcstress test review
+
+This reviews `ChecksumScannerTermination` as committed in 8622491. At that commit `running` is
+volatile and `lastChecksum` is not. I ran the test with jcstress 0.16 on your M1, in scratch
+copies outside the repo: once against the code at 8622491, and once with `volatile` removed
+from `running`.
+
+**Verdict.** jcstress test: correct. Fix: still incomplete, because `lastChecksum` is unchanged.
+The three most important things to do:
+
+1. Record the results, and what they do and don't prove, in `DIAGNOSIS.md` (finding 1).
+2. Read the STALE count the way jcstress produces it (finding 2).
+3. Finish the fix (finding 3).
+
+**Results.**
+
+| Code | Mode | Trials | STALE | jcstress result |
+|---|---|---|---|---|
+| `running` volatile (8622491) | quick | 2,929 in 4 forks | 0 | passed |
+| `running` volatile (8622491) | default | 28,125 in 8 forks | 0 | passed |
+| `running` plain (original) | quick | 33 in 4 forks | 4, one per fork | failed: forbidden STALE |
+
+The original hung in every fork. That includes the fork that ran with C2's code-motion
+randomizers (`-XX:+StressLCM` and related flags).
+
+**What the test gets right.**
+
+- Termination mode is the right tool. The claim under test is that the loop eventually
+  observes `stop()`. That is a liveness property, not a pair of values.
+- The actor runs exactly the loop you diagnosed, and the signal makes exactly the write, so
+  the test races what it claims to.
+- `STALE` is classified `FORBIDDEN`, which matches the README's contract. A hang is a bug,
+  not an "interesting" outcome.
+- Each trial gets a fresh `ChecksumScannerTermination`, so trials never share a scanner.
+
+### Findings
+
+**1. The results are not recorded. (Medium)** `DIAGNOSIS.md` still says "I dont see a reason
+for jcstress" and "TODO: write jcstress test". Record:
+
+- what the test checks;
+- which code you ran it against, in which mode, and with what result;
+- why a STALE outcome on the original supports your diagnosis;
+- what a pass on the fix does and does not prove.
+
+On the last point, keep two things apart. jcstress searches far harder than the plain stress
+test, with thousands of trials across several JVM configurations, but it is still a search.
+The test found the bug. The happens-before argument (the volatile variable rule) is what shows
+the fix is correct.
+
+**2. STALE can only ever be counted once per fork. (Medium)** Look at the runner jcstress
+generates, in `target/generated-sources/annotations/lab/week01/checksum/`. It stops a fork at
+the first STALE trial. That has two consequences:
+
+- "STALE 4 (12%)" means every fork hung. It does not mean 12% of trials hang. Don't compare
+  that percentage across runs or modes.
+- In a failing fork, every TERMINATED trial ran before the hang.
+
+**3. `lastChecksum` is still a plain `long`. (Medium)** The fix verdict from the final word
+still stands. Your working tree had `lastChecksum` volatile earlier today, but that change was
+never committed and is no longer there. If you meant to keep it, it needs redoing. No test
+covers this field; question 3 asks whether one could.
+
+**4. Minor points. (Minor)** The commit messages "ChecksumScannerTermination" and "review
+response" have no `<kata>:` prefix. Something like `ChecksumScanner: jcstress test` would do.
+
+### Questions to think about
+
+No reply is needed. Reopen the kata if you want to discuss any of them.
+
+1. In every failing fork, the hang came only after 4 to 9 trials that terminated. Why doesn't
+   the first trial hang? It's the same question as round 3 in the stress test, and the same
+   experiment answers it.
+2. The generated runner has the actor thread write a volatile `started` flag. The signal
+   thread waits for that flag before it calls `stop()`. Why doesn't that volatile edge rescue a
+   non-volatile `running`? Answer in terms of which action happens-before which.
+3. Could a jcstress test show the `lastChecksum` problem on your machine? Which part of the
+   problem could it show, which part could it never show on a 64-bit JVM, and what would a
+   pass then tell you?
+
+**This kata is closed.**
