@@ -20,7 +20,8 @@
 
       jcstress tests live in src/main/java, as jcstress expects: its annotation
       processor generates the test harness at compile time, and the shaded
-      jcstress.jar runs everything it finds.
+      jcstress.jar runs everything it finds. The setup is in the parent POM; this
+      module opts in below. -Pjcstress skips the stress tests.
 
         mvn -pl week01-katas verify -Pjcstress                       run all tests
         mvn -pl week01-katas verify -Pjcstress -Djcstress.args="-t Counter -m quick"
@@ -28,8 +29,8 @@
     -->
 
     <properties>
-        <!-- Passed straight to jcstress; e.g. "-t <regex>" to filter, "-m quick|default|tough" for effort. -->
-        <jcstress.args>-m default</jcstress.args>
+        <!-- Opt in to the parent's jcstress setup: build target/jcstress.jar, and run it under -Pjcstress. -->
+        <jcstress.skip>false</jcstress.skip>
     </properties>
 
     <dependencies>
@@ -43,73 +44,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <!-- Since JDK 23 javac no longer runs processors found on the classpath, so name it explicitly. -->
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.openjdk.jcstress</groupId>
-                            <artifactId>jcstress-core</artifactId>
-                            <version>${jcstress.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <finalName>jcstress</finalName>
-                            <!-- The shaded jar is only run locally, never installed, so no reduced POM is needed. -->
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.openjdk.jcstress.Main</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>jcstress</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>run-jcstress</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>${java.home}/bin/java</executable>
-                                    <workingDirectory>${project.build.directory}</workingDirectory>
-                                    <commandlineArgs>-jar ${project.build.directory}/jcstress.jar ${jcstress.args}</commandlineArgs>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
