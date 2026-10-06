@@ -27,7 +27,7 @@ public final class LatencyStats {
         return maxMicros;
     }
 
-    public double meanMicros() {
+    public synchronized double meanMicros() {
         return count == 0 ? 0.0 : (double) totalMicros / count;
     }
 }
