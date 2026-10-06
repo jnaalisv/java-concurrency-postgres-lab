@@ -58,8 +58,6 @@ about concurrency, so I missed the point.
 I agree. I initially rejected writing jcstress because I wanted to focus on the meat and not the side dishes. jcstress
 is completely new to me in every way, so its additional learning burden, but clearly very useful tool.
 
-TODO: write jcstress test.
-
 ### Questions
 
 1. The worker would not be guaranteed to stop because synchronizing the method `stop()` 
