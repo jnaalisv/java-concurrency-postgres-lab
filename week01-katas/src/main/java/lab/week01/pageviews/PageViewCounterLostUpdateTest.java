@@ -1,7 +1,6 @@
 package lab.week01.pageviews;
 
 import org.openjdk.jcstress.annotations.*;
-import org.openjdk.jcstress.infra.results.D_Result;
 import org.openjdk.jcstress.infra.results.J_Result;
 
 import static org.openjdk.jcstress.annotations.Expect.*;

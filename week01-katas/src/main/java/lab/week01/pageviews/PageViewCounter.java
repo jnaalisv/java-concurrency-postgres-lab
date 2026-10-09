@@ -5,7 +5,7 @@ package lab.week01.pageviews;
  */
 public final class PageViewCounter {
 
-    private volatile long views;
+    private long views;
 
     public synchronized void record() {
         views++;
