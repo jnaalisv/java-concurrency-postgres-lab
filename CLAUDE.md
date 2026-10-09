@@ -122,6 +122,17 @@ Each kata gets exactly one round of discussion:
    After that the kata is closed. Do not continue the discussion unless the owner
    explicitly reopens it.
 
+**What the "Mechanism" in a diagnosis must contain:**
+
+- Atomicity bugs (lost update, check-then-act, related fields read separately): the
+  interleaving, step by step, that breaks the invariant.
+- Visibility and ordering bugs (stop flags, unsafe publication, reordering): the JMM
+  argument, meaning which write, which read, the missing happens-before edge, and the rule
+  that would supply it. The concrete JIT or CPU mechanism (hoisting, store reordering) is
+  optional background; mention it if it explains test behaviour, but do not make it a
+  finding.
+- Platform behaviour ("x86 does not reorder this") is never a valid correctness argument.
+
 **Format of `REVIEW.md`:**
 
 - Start with a short **verdict** (diagnosis: correct / partly correct / incorrect;
