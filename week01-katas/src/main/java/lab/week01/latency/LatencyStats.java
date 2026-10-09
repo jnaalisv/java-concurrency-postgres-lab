@@ -19,11 +19,11 @@ public final class LatencyStats {
         maxMicros = Math.max(maxMicros, latencyMicros);
     }
 
-    public long count() {
+    public synchronized long count() {
         return count;
     }
 
-    public long maxMicros() {
+    public synchronized long maxMicros() {
         return maxMicros;
     }
 
