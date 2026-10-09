@@ -7,7 +7,7 @@ public final class PageViewCounter {
 
     private volatile long views;
 
-    public void record() {
+    public synchronized void record() {
         views++;
     }
 
