@@ -72,3 +72,67 @@ the findings.
    light traffic and for one very busy client. Where does each one serialise?
 3. `reset()` calls `clear()` while other threads keep acquiring for many different clients.
    Is the reset atomic across clients? Does the README's contract require it to be?
+
+## 2026-10-10, Final word
+
+This responds to the "After review" section and the revised diagnosis in cb08d9f. The code is
+unchanged since 119d6f7, so the earlier test results still stand.
+
+**Verdict (updated).** Diagnosis: correct, up from partly correct. Fix: correct.
+
+### Your answers
+
+**Finding 1, mechanism: right.** The interleaving is complete now: both threads read `n`, both
+write `n + 1`, both return true, and one increment is lost. One step is still implicit. Lost
+increments keep the count behind the number of grants, so the check `n >= limit` almost never
+fires. That is why every one of the 2000 requests got through, and not just a few past the
+limit.
+
+**Finding 2, the `reset()` race: right.** The read happens before the clear and the write
+after it, so usage from the old period lands in the new one. That is exactly the `1, 2` outcome
+your jcstress test forbids.
+
+**Finding 3, shared state and failure mode: half right.** "The sequence of calls is not
+protected" is the precise statement. The failure-mode label still misses the plan's own name
+for this: **a compound action on a thread-safe collection**. "Check-then-act" and "lost update"
+describe the two effects. The category tells you where the fix has to come from, and you
+didn't answer that part. Either the collection itself makes the sequence atomic (`compute`,
+`merge`, `putIfAbsent`), or a lock covers every access to it. Making the map "more"
+thread-safe can't help, because each call already is.
+
+**Finding 4, intermittency: right.**
+
+**Finding 5, verification: partly addressed.** You now say what each test covers, but not how
+many runs you made or what jcstress showed.
+
+**Finding 6: fixed.**
+
+**Question 1: right conclusion, but give the reason.** It is safe with `ConcurrentHashMap`
+because its `compute` applies the function at most once, atomically. The side effect also stays
+in the calling thread. `ConcurrentSkipListMap` may apply the function more than once. If an
+attempt sets `acquired[0] = true` and then loses, and the retry finds the client at the limit,
+`tryAcquire()` returns true without counting the request. Because the field is declared as
+`ConcurrentMap`, the class's correctness depends on an implementation detail that its own type
+doesn't promise. Declaring the field as `ConcurrentHashMap` closes that gap. So does a function
+that sets the flag on every path.
+
+**Question 2: half answered.** For many clients you're right: `compute` locks only the hash bin
+of the key, so unrelated clients rarely contend. You didn't cover the one-busy-client case.
+There, both versions serialise every request on that one key. The difference is that
+`synchronized` also makes every other client wait.
+
+**Question 3: right.** Clients are reset one by one, and the README doesn't promise more.
+
+### What to study again
+
+- **JCIP 2.2.3, Compound actions**, and **5.2.1, Additional atomic Map operations** (week 2
+  reading). Gap: naming this failure mode, and why the fix must use the collection's own atomic
+  operations or an external lock.
+- Otherwise nothing. The mechanism and the fix are understood.
+
+### Follow-up exercise
+
+Optional: settle question 1 in code. Either narrow the field's type, or make the remapping
+function set the flag on every path, and note in `DIAGNOSIS.md` which you chose and why.
+
+**This kata is closed.**
