@@ -23,12 +23,16 @@ public final class RequestQuota {
      * @return true if the request is within the client's quota and has been counted against it
      */
     public boolean tryAcquire(String clientId) {
-        int current = used.getOrDefault(clientId, 0);
-        if (current >= limit) {
-            return false;
-        }
-        used.put(clientId, current + 1);
-        return true;
+        boolean[] acquired = {false};
+        used.compute(clientId, (_, current) -> {
+            int n = current == null ? 0 : current;
+            if (n >= limit) {
+                return current;
+            }
+            acquired[0] = true;
+            return n + 1;
+        });
+        return acquired[0];
     }
 
     public int used(String clientId) {
