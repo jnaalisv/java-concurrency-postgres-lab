@@ -6,7 +6,7 @@ package lab.week01.quotes;
  */
 public final class QuoteBoard {
 
-    private Quote latest;
+    private volatile Quote latest;
 
     public void publish(Quote quote) {
         latest = quote;

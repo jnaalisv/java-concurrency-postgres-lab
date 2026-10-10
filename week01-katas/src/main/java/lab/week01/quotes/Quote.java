@@ -5,9 +5,9 @@ package lab.week01.quotes;
  */
 public final class Quote {
 
-    private String symbol;
-    private long bidCents;
-    private long askCents;
+    private final String symbol;
+    private final long bidCents;
+    private final long askCents;
 
     public Quote(String symbol, long bidCents, long askCents) {
         if (symbol == null || symbol.isBlank()) {
