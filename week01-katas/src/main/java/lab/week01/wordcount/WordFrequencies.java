@@ -3,6 +3,7 @@ package lab.week01.wordcount;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -13,7 +14,7 @@ public final class WordFrequencies {
 
     private static final Pattern NON_WORD = Pattern.compile("\\W+");
 
-    private final Map<String, Integer> counts = new HashMap<>();
+    private final ConcurrentHashMap<String, Integer> counts = new ConcurrentHashMap<>();
 
     public void add(String text) {
         for (String word : NON_WORD.split(text.toLowerCase(Locale.ROOT))) {
