@@ -26,10 +26,13 @@ public final class Wallet {
      */
     public boolean withdraw(long amountCents) {
         requirePositive(amountCents);
-        if (balanceCents.get() < amountCents) {
-            return false;
-        }
-        balanceCents.addAndGet(-amountCents);
+        long current;
+        do {
+            current = balanceCents.get();
+            if (current < amountCents) {
+                return false;
+            }
+        } while (!balanceCents.compareAndSet(current, current - amountCents));
         return true;
     }
 
