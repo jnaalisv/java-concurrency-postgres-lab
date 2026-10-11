@@ -1,7 +1,7 @@
 # rates: diagnosis
 
 ## Symptom
-Saw table reference before its contents
+Saw table reference before its contents, jcstress outcome `3`
 
 ## Failure mode
 unsafe lazy initialization, via broken double-checked locking, where the rate table is unsafely published
@@ -10,6 +10,7 @@ unsafe lazy initialization, via broken double-checked locking, where the rate ta
 | Field | Written by | Read by | Protected by |
 |---|---|---|---|
 | `CurrencyConverter.table` (RateTable) |  `toEur()`  | `toEur()` | not protected |
+| `RateTable.ratesToEur` (Map<String, BigDecimal>) |  `put()`  | `rateToEur()` | not protected |
 
 ## Mechanism
 `CurrencyConverter.table`  isn’t volatile, and the fast path reads it without taking the lock. Take two threads, A and B:
@@ -28,7 +29,24 @@ take it, and B on the fast path never does.
 depends on the interleaving; a passing run proves nothing
 
 ## What the fix must guarantee
-Safe publication of `CurrencyConverter.table`.
+Safe publication of `CurrencyConverter.table` and that rates are fetched exactly once.
 
 ## Fix and verification
-Make `CurrencyConverter.table` and init it via constructor. Jcstress tests must pass.
+1. `table` is now volatile, communicate intent and the correctness doesnt depend on RateTable implementation
+2. the fast path reads `table` once, into a local variable;
+3. `RateTable` is immutable, built from `Map.copyOf` in its constructor, which guarantees safe initialization
+
+Jcstress tests must pass.
+
+# After review
+
+1. Strictly, no. With the immutable RateTable, the code is correct without volatile. 
+
+RateTable is safely initialized. Its only field is final, it’s set in the constructor, and this doesn’t escape the 
+constructor. The JMM then guarantees that any thread seeing a RateTable reference also sees ratesToEur, plus everything reachable through
+it as of the end of the constructor: the Map.copyOf result’s internal array and the BigDecimals.
+
+2. synchronizing the method `table()`, but that would be slower.
+
+3. Other callers will block, if the method throws, the lock will be released and another call can enter the synchronized 
+   block.
