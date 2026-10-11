@@ -10,7 +10,7 @@ import java.util.Map;
 public final class CurrencyConverter {
 
     private final RateSource source;
-    private RateTable table;
+    private volatile RateTable table;
 
     public CurrencyConverter(RateSource source) {
         this.source = source;
@@ -21,17 +21,16 @@ public final class CurrencyConverter {
     }
 
     private RateTable table() {
-        if (table == null) {
+        RateTable loaded = table;
+        if (loaded == null) {
             synchronized (this) {
-                if (table == null) {
-                    RateTable loaded = new RateTable();
-                    for (Map.Entry<String, BigDecimal> rate : source.fetchRatesToEur().entrySet()) {
-                        loaded.put(rate.getKey(), rate.getValue());
-                    }
+                loaded = table;
+                if (loaded == null) {
+                    loaded = new RateTable(source.fetchRatesToEur());
                     table = loaded;
                 }
             }
         }
-        return table;
+        return loaded;
     }
 }

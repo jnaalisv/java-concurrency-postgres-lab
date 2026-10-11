@@ -6,10 +6,10 @@ import java.util.Map;
 
 final class RateTable {
 
-    private final Map<String, BigDecimal> ratesToEur = new HashMap<>();
+    private final Map<String, BigDecimal> ratesToEur;
 
-    void put(String currency, BigDecimal rateToEur) {
-        ratesToEur.put(currency, rateToEur);
+    RateTable(Map<String, BigDecimal> ratesToEur) {
+        this.ratesToEur = Map.copyOf(ratesToEur);
     }
 
     BigDecimal rateToEur(String currency) {
